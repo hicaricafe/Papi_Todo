@@ -3,8 +3,8 @@
 require_once('config.php');
 require_once('functions.php');
 
-$dbh = connectDb();
+// DBに接続
+connectDb();
 
-$sql = "update tasks set type = if(type='done', 'notyet', 'done'), modified = now() where id = :id";
-$stmt = $dbh->prepare($sql);
-$stmt->execute(array(":id" => (int)$_POST['id'])); 
+$rs = mysql_query("update tasks set type=if(type='done', 'notyet', 'done') where id=".r($_POST['id']));
+

@@ -3,20 +3,22 @@
 require_once('config.php');
 require_once('functions.php');
 
-$dbh = connectDb();
+// DBに接続
+connectDb();
 
-$sql = "select max(seq)+1 from tasks where type !='deleted'";
-$seq = $dbh->query($sql)->fetchColumn();
+// データをつっこむ
 
-$sql = "insert into tasks
-		(seq, title, created, modified)
-		values
-		(:seq, :title, now(), now())";
+// $title
 
-$stmt = $dbh->prepare($sql);
-$stmt->execute(array(
-	":seq" => $seq,
-	":title" => $_POST['title']
-	));
+$title = $_POST['title'];
 
-echo $dbh->lastInsertId();
+// $seqを作る
+
+$rs = mysql_query("select max(seq)+1 as c from tasks");
+$row = mysql_fetch_assoc($rs);
+$seq = $row['c'];
+
+$rs = mysql_query(sprintf("insert into tasks (seq, title, created, modified) values (%d, '%s', now(), now())",$seq, r($title)));
+
+echo mysql_insert_id();
+

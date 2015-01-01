@@ -3,11 +3,11 @@
 require_once('config.php');
 require_once('functions.php');
 
-$dbh = connectDb();
+// DBに接続
+connectDb();
 
-$sql = "update tasks set title = :title, modified = now() where id = :id";
-$stmt = $dbh->prepare($sql);
-$stmt->execute(array(
-	":id" => (int)$_POST['id'],
-	":title" => $_POST['title']
-	));
+$id = $_POST['id'];
+$title = $_POST['title'];
+
+$rs = mysql_query(sprintf("update tasks set title='%s' where id=%d", r($title), r($id)));
+

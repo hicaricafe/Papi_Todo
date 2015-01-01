@@ -1,14 +1,14 @@
 <?php
 
-function connectDb(){
-	try{
-		return new PDO(DSN, DB_USER, DB_PASSWORD);
-	}catch(PDOException $e){
-		echo $e->getMessage();
-		exit;
-	}
+function connectDb() {
+    mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die("can't connect to DB: ".mysql_error());
+    mysql_select_db(DB_NAME) or die("can't select DB: ".mysql_error());
+}
+
+function r($s) {
+    return mysql_real_escape_string($s);
 }
 
 function h($s) {
-	return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
+    return htmlspecialchars($s);
 }
